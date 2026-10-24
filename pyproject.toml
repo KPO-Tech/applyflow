@@ -1,0 +1,72 @@
+[project]
+name = "applyflow"
+version = "0.1.0"
+description = "ApplyFlow — gestion locale et automatisée des candidatures (Python, Playwright, SQLite)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "ApplyFlow contributors" }]
+dependencies = [
+    "alembic>=1.14",
+    "beautifulsoup4>=4.12",
+    "fastapi>=0.115",
+    "feedparser>=6.0",
+    "httpx>=0.28",
+    "keyring>=25.7.0",
+    "playwright>=1.49",
+    "pycountry>=26.2.16",
+    "pydantic>=2.10",
+    "python-multipart>=0.0.12",
+    "sqlalchemy>=2.0.36",
+    "tomli-w>=1.1",
+    "uvicorn>=0.32",
+]
+
+[project.optional-dependencies]
+# Collecte étendue (voir docs/discovery.md) : JobSpy (job boards) et ats-scrapers (ATS publics).
+boards = [
+    "python-jobspy>=1.4.1",
+    "ats-scrapers[scrapers]>=0.3.0",
+]
+decision = [
+    "laya>=0.4.14",
+]
+
+[project.scripts]
+applyflow = "applyflow.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/applyflow"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+    "playwright: requires a locally installed Chromium browser (uv run playwright install chromium)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/applyflow/api/main.py" = ["B008"]
+
+[tool.coverage.run]
+source = ["applyflow"]

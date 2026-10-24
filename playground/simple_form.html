@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Formulaire de démonstration — champs standards</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 48px auto; padding: 0 20px; }
+    label { display: block; margin-top: 14px; font-weight: 600; }
+    input, select { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+    button { margin-top: 24px; padding: 10px 18px; }
+  </style>
+</head>
+<body>
+  <h1>Formulaire de candidature (démo)</h1>
+  <p>Formulaire fictif ne contenant que des champs standards. Aucun envoi réel.</p>
+  <form action="#" method="post">
+    <label for="full_name">Full name *</label>
+    <input id="full_name" name="full_name" type="text" required>
+
+    <label for="email">Email *</label>
+    <input id="email" name="email" type="email" required>
+
+    <label for="phone">Phone</label>
+    <input id="phone" name="phone" type="tel">
+
+    <label for="city">City</label>
+    <input id="city" name="city" type="text">
+
+    <label for="linkedin">LinkedIn URL</label>
+    <input id="linkedin" name="linkedin" type="url">
+
+    <label for="resume">Resume/CV *</label>
+    <input id="resume" name="resume" type="file" accept=".pdf" required>
+
+    <label for="remote_preference">Remote preference</label>
+    <select id="remote_preference" name="remote_preference">
+      <option value="onsite">On-site</option>
+      <option value="hybrid">Hybrid</option>
+      <option value="remote">Remote</option>
+    </select>
+
+    <button type="submit">Apply</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Formulaire de démonstration — type Lever</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 680px; margin: 48px auto; padding: 0 20px; color: #1f2933; }
+    h1 { font-size: 1.5rem; }
+    label { display: block; margin-top: 16px; font-weight: 600; }
+    input, select { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+    button { margin-top: 24px; padding: 10px 18px; }
+  </style>
+</head>
+<body>
+  <h1>Formulaire de candidature (démo)</h1>
+  <p>Formulaire fictif de type Lever. Aucun envoi réel.</p>
+  <form action="#" method="post">
+    <label for="full_name">Full name *</label>
+    <input id="full_name" name="full_name" type="text" required>
+
+    <label for="email">Email *</label>
+    <input id="email" name="email" type="email" required>
+
+    <label for="phone">Phone</label>
+    <input id="phone" name="phone" type="tel">
+
+    <label for="resume">Resume / CV *</label>
+    <input id="resume" name="resume" type="file" accept="application/pdf" required>
+
+    <label for="current_company">Current company</label>
+    <input id="current_company" name="current_company" type="text">
+
+    <label for="remote_preference">Preferred work arrangement *</label>
+    <select id="remote_preference" name="remote_preference" required>
+      <option value="onsite">On-site</option>
+      <option value="hybrid">Hybrid</option>
+      <option value="remote">Remote</option>
+    </select>
+
+    <label for="notice_period">What is your notice period? *</label>
+    <input id="notice_period" name="notice_period" type="text" required>
+
+    <button type="submit">Submit application</button>
+  </form>
+</body>
+</html>

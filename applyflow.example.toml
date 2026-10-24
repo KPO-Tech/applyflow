@@ -1,0 +1,87 @@
+# ApplyFlow — configuration d'exemple.
+# Copier vers `applyflow.toml` puis adapter. Toutes les données restent locales.
+
+[app]
+# Répertoire des données (base SQLite, CV importés). Chemin relatif au fichier de config.
+data_dir = "data"
+# laisser vide pour utiliser <data_dir>/applyflow.db
+db_url = ""
+log_level = "INFO"
+log_json = false
+# Autorise les formulaires fictifs `demo://` livrés avec le projet (démonstration et tests).
+demo_forms = true
+
+[router]
+# "deterministic" (défaut, aucune dépendance), "laya" ou "remote" (contrat HTTP ApplyFlow).
+provider = "deterministic"
+fallback_to_deterministic = true
+# Laya : moteur local. Voir docs/laya.md — Laya ne fournit pas de routeur de CV.
+laya_base_url = "http://127.0.0.1:8420"
+laya_token = ""
+# Endpoint HTTP local optionnel qui implémente le contrat de routage ApplyFlow.
+remote_route_url = ""
+timeout_seconds = 10.0
+# Écart minimal entre les deux meilleurs profils avant de marquer le choix « incertain ».
+uncertainty_margin = 0.08
+
+[discovery]
+user_agent = "ApplyFlow/0.1 (local job application assistant; contact: local-user)"
+timeout_seconds = 20.0
+rate_limit_seconds = 1.0
+max_jobs_default = 1000
+
+[scoring]
+excluded_seniority = ["lead", "principal", "staff", "head", "director"]
+penalized_seniority = ["senior"]
+max_required_years = 5.0
+
+[scoring.weights]
+skills = 30
+titles = 20
+seniority = 20
+experience = 15
+location = 5
+contract = 5
+obligations = 5
+
+[scoring.thresholds]
+high = 80
+medium = 65
+min_apply = 65
+
+[application]
+# Mode sécurisé par défaut : analyse et préremplissage simulé, aucune soumission.
+dry_run = true
+allow_submit = false
+headless = true
+# Relit la page dans un navigateur quand le HTML servi ne contient aucun champ (ATS
+# qui construisent le formulaire en JavaScript). Aucune interaction, aucun envoi.
+render_forms = true
+max_resume_mb = 5
+max_form_bytes = 2000000
+
+[api]
+host = "127.0.0.1"
+port = 8000
+
+[ui]
+port = 8501
+
+# Collecte étendue via JobSpy (LinkedIn, Indeed, Glassdoor, HelloWork). Désactivée par défaut.
+# Installation : uv sync --extra boards. Voir docs/discovery.md avant d'activer.
+[boards]
+jobspy_enabled = false
+sites = ["indeed", "hellowork", "linkedin"]
+country = "france"
+max_per_site = 100
+pause_seconds = 5.0
+proxies = []
+
+# Plafond d'offres collectées par jour et par site (mémorisé dans data/collection_usage.json).
+# 0 = pas de plafond pour ce site. Commencez bas et montez seulement sans blocage (429).
+[boards.daily_limits]
+linkedin = 75
+indeed = 200
+glassdoor = 150
+hellowork = 150
+google = 100

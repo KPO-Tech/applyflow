@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Formulaire de démonstration — type Greenhouse</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; color: #1f2933; }
+    h1 { font-size: 1.5rem; }
+    .job { color: #52606d; margin-bottom: 24px; }
+    label { display: block; margin-top: 16px; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+    textarea { min-height: 100px; }
+    button { margin-top: 24px; padding: 10px 18px; background: #0b5fff; color: white; border: 0; border-radius: 4px; }
+    .hint { color: #52606d; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>Formulaire de candidature (démo)</h1>
+  <p class="job">Formulaire fictif de type Greenhouse — aucun envoi réel.</p>
+  <p class="hint">ApplyFlow analyse ces champs localement ; rien n'est transmis.</p>
+  <form action="#" method="post">
+    <label for="first_name">First name *</label>
+    <input id="first_name" name="first_name" type="text" required>
+
+    <label for="last_name">Last name *</label>
+    <input id="last_name" name="last_name" type="text" required>
+
+    <label for="email">Email *</label>
+    <input id="email" name="email" type="email" required>
+
+    <label for="phone">Phone</label>
+    <input id="phone" name="phone" type="tel">
+
+    <label for="resume">Resume/CV *</label>
+    <input id="resume" name="resume" type="file" accept=".pdf" required>
+
+    <label for="linkedin">LinkedIn Profile</label>
+    <input id="linkedin" name="linkedin" type="url">
+
+    <label for="work_authorization">Are you authorized to work in France? *</label>
+    <select id="work_authorization" name="work_authorization" required>
+      <option value="">Select…</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <label for="why_nova">Why do you want to join this company? *</label>
+    <textarea id="why_nova" name="why_nova" required></textarea>
+
+    <button type="submit">Submit application</button>
+  </form>
+</body>
+</html>

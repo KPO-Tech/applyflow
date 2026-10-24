@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+data/
+applyflow.toml
+.streamlit/
+*.db
+*.db-journal
+.env
+.DS_Store
+
+# Dépôts de référence clonés (non versionnés)
+private/
