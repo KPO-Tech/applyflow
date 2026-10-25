@@ -302,7 +302,7 @@ Tableau complet, formats d'import et règles de conformité : [docs/connectors.m
 
 ```bash
 uv run pytest                 # 401 tests, dont 5 Playwright (skippés si Chromium est absent)
-uv run pytest -m e2e          # 3 parcours complets : serveur local + navigateur
+uv run pytest tests/test_e2e_ui.py  # 3 parcours complets : serveur local + navigateur
 uv run pytest --cov=applyflow # couverture (~91 % global)
 uv run ruff check .           # ou : make check (lint + tests)
 ```

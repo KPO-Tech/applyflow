@@ -82,7 +82,7 @@ test-fast:
 	$(UV) run pytest -m "not playwright"
 
 e2e:
-	$(UV) run pytest -m e2e -ra
+	$(UV) run pytest tests/test_e2e_ui.py -ra
 
 cov:
 	$(UV) run pytest --cov=applyflow --cov-report=term-missing:skip-covered

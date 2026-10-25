@@ -54,7 +54,6 @@ testpaths = ["tests"]
 addopts = "-q"
 markers = [
     "playwright: requires a locally installed Chromium browser (uv run playwright install chromium)",
-    "e2e: parcours de bout en bout dans un vrai navigateur, avec un serveur local temporaire",
 ]
 
 [tool.ruff]

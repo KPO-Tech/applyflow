@@ -42,7 +42,9 @@ VIEW_TITLES = {
 }
 NAV_LABELS = {**VIEW_TITLES, "dashboard": "Tableau de bord"}
 
-pytestmark = [pytest.mark.playwright, pytest.mark.e2e]
+# Le marqueur `playwright` suffit : `make test-fast` (et `-m "not playwright"`) écartent ces
+# parcours, et `make e2e` les sélectionne par fichier.
+pytestmark = pytest.mark.playwright
 
 
 def _chromium_available() -> bool:
