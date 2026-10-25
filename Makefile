@@ -8,7 +8,7 @@ UI_PORT ?= 8501
 
 .DEFAULT_GOAL := help
 .PHONY: help install browsers config init ui api status providers usage dedupe \
-        test test-fast cov lint fix check bench eval measure-render live-ats live-boards clean
+        test test-fast e2e cov lint fix check bench eval measure-render live-ats live-boards clean
 
 help:
 	@echo "ApplyFlow - commandes"
@@ -30,6 +30,7 @@ help:
 	@echo "Qualite"
 	@echo "  make test          tous les tests"
 	@echo "  make test-fast     tests sans le navigateur"
+	@echo "  make e2e           parcours complets : serveur local + Chromium (3 tests)"
 	@echo "  make cov           tests avec couverture"
 	@echo "  make lint          ruff"
 	@echo "  make fix           ruff avec corrections automatiques"
@@ -79,6 +80,9 @@ test:
 
 test-fast:
 	$(UV) run pytest -m "not playwright"
+
+e2e:
+	$(UV) run pytest -m e2e -ra
 
 cov:
 	$(UV) run pytest --cov=applyflow --cov-report=term-missing:skip-covered

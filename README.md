@@ -52,7 +52,7 @@ ApplyFlow n'est **pas** un robot de soumission massive.
 | Interface | Site web local 8 espaces : Tableau de bord, Profils & CV, Découverte, Campagnes, File de validation, Candidatures, Suivi e-mail, Réglages. Modules JS natifs, SVG et CSS, aucun framework front |
 | API | FastAPI locale sur `127.0.0.1`, documentation OpenAPI automatique |
 | Données | SQLite + SQLAlchemy 2 + migrations Alembic, journal d'audit, logs structurés JSON ou texte |
-| Qualité | 394 tests pytest (unitaires, intégration, API, CLI, Playwright), Ruff, couverture globale 91 % (les assets du site sont testés via leurs routes HTTP) |
+| Qualité | 401 tests pytest (unitaires, intégration, API, CLI, Playwright), dont 3 parcours de bout en bout dans un vrai navigateur, Ruff, couverture globale 91 % |
 
 ### Capacité 1 000 offres
 
@@ -301,9 +301,10 @@ Tableau complet, formats d'import et règles de conformité : [docs/connectors.m
 ## Tests
 
 ```bash
-uv run pytest                 # 398 tests, dont 2 Playwright (skippés si Chromium est absent)
+uv run pytest                 # 401 tests, dont 5 Playwright (skippés si Chromium est absent)
+uv run pytest -m e2e          # 3 parcours complets : serveur local + navigateur
 uv run pytest --cov=applyflow # couverture (~91 % global)
-uv run ruff check .
+uv run ruff check .           # ou : make check (lint + tests)
 ```
 
 Couverture fonctionnelle testée : configuration, migrations, dédoublonnage, séniorité
@@ -311,6 +312,12 @@ contextuelle, scoring/portes, routeur + fallback + contrat HTTP, connecteurs (Mo
 profils/CV, analyse de formulaires, préparation dry-run, questions inconnues, approbation,
 soumission unique, reprise de campagne, idempotence, campagnes en arrière-plan (progression,
 arrêt, une seule à la fois), CLI, parsing IMAP des réponses, export, API.
+
+Les **parcours de bout en bout** ([test_e2e_ui.py](tests/test_e2e_ui.py)) démarrent un vrai serveur
+sur un port libre, avec une base temporaire, puis pilotent Chromium comme une personne : les huit
+écrans doivent s'afficher sans erreur JavaScript, un profil se crée par le formulaire, trois offres
+s'importent depuis un fichier JSON et une campagne va jusqu'au bout (collecte → analyse →
+préparation). Une page blanche ou un module cassé ne passe plus la suite.
 
 ## Intégration continue et publication
 
@@ -320,7 +327,7 @@ Chaque poussée sur `main` et chaque proposition de fusion rejoue sur GitHub Act
 | Job | Contenu |
 |---|---|
 | Ruff | analyse statique, dépendances installées depuis `uv.lock` |
-| Tests | suite complète, Chromium installé au préalable |
+| Tests | suite complète, Chromium installé au préalable : unitaires, API, Playwright et parcours de bout en bout de l'interface |
 | Paquet | `uv build`, ressources web présentes dans le wheel, installation du wheel dans un environnement vierge et `applyflow --help` |
 
 **Publier une version.** Le tag doit correspondre exactement à `version` dans `pyproject.toml` :
@@ -344,7 +351,6 @@ créer : `GITHUB_TOKEN` suffit, et rien n'est envoyé vers PyPI.
 * Pas d'adaptateurs de soumission spécifiques par ATS ; la soumission reste humaine.
 * Pas de génération de lettre de motivation ni de réécriture de CV (choix assumé).
 * Collecte séquentielle, sans pagination automatique au-delà de ce que le connecteur expose.
-* L'interface web est couverte par des tests de routes statiques et a été vérifiée dans le navigateur ; elle n'a pas encore de test E2E automatisé.
 * Un seul CV actif par profil (conforme au choix « un CV fixe par profil »).
 
 Voir [docs/status.md](docs/status.md) pour la liste « terminé / partiel / à faire ».

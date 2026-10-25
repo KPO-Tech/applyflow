@@ -1,6 +1,6 @@
 # État du projet : terminé, partiel, à faire
 
-Dernière mise à jour : 2026-10-24. Ce document remplace toute promesse implicite du brief.
+Dernière mise à jour : 2026-10-25. Ce document remplace toute promesse implicite du brief.
 
 ## Synthèse
 
@@ -12,7 +12,7 @@ Dernière mise à jour : 2026-10-24. Ce document remplace toute promesse implici
 | 4 — Intelligence | 🟡 Partielle | Routage déterministe + scoring complets ; Laya natif impossible (pas d'API CV), adaptateur fourni ; modèle de décision **mesuré et écarté** |
 | 5 — Candidatures | 🟡 Partielle | Dry-run, analyse/préremplissage HTML, réponses, approbation, suivi ; pas de soumission automatique |
 | 6 — Campagnes | ✅ Terminée | 1 000 offres, **exécution en arrière-plan**, pause/reprise/annulation, idempotence, tableau de bord, exports |
-| Transverse | ✅ Terminée | API locale, CLI, site web 8 espaces, logs structurés, audit, docs, 394 tests (91 % de couverture), benchmark 1 000 |
+| Transverse | ✅ Terminée | API locale, CLI, site web 8 espaces, logs structurés, audit, docs, 401 tests (91 % de couverture) dont 3 parcours de bout en bout dans le navigateur, benchmark 1 000 |
 
 ## Détail
 
@@ -139,7 +139,9 @@ Dernière mise à jour : 2026-10-24. Ce document remplace toute promesse implici
 3. Extraction texte des CV (pypdf) pour des raisons de routage plus riches.
 4. Adaptateurs de préremplissage par ATS lorsque leurs conditions l'autorisent ; palier 1 de
    [agent-navigation.md](agent-navigation.md) (suivre le lien « Postuler ») avant tout agent.
-5. Tests E2E automatisés du site et test de bout en bout de la validation.
+5. Test de bout en bout du parcours de validation (préparation → approbation → enregistrement de
+   la soumission) : les parcours profil, import d'offres et campagne sont désormais couverts dans
+   `tests/test_e2e_ui.py`.
 
 ### P2 — qualité et échelle
 
