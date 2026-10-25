@@ -37,6 +37,15 @@ def test_health_and_settings(api_client) -> None:
     assert "saved_to" in updated.json()
 
 
+def test_discovery_retry_settings_are_persisted(api_client) -> None:
+    response = api_client.put("/settings", json={"discovery": {"retry_attempts": 4}})
+    assert response.status_code == 200
+    payload = api_client.get("/settings").json()
+    assert payload["discovery"]["retry_attempts"] == 4
+    # Les autres clés de la section survivent à une mise à jour partielle.
+    assert payload["discovery"]["rate_limit_seconds"] == 0
+
+
 def test_adzuna_settings_test_and_discovery(api_client, monkeypatch) -> None:
     def catalog() -> dict:
         return {item["kind"]: item for item in api_client.get("/sources").json()}

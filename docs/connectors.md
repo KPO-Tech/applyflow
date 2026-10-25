@@ -13,8 +13,9 @@ class JobProvider(Protocol):
 
 Ajouter une source = ajouter une classe + l'enregistrer dans `providers/registry.py`, sans toucher
 aux campagnes, au scoring ni à l'interface. Les appels sont **séquentiels** ; `collect_jobs` marque
-une pause configurable entre connecteurs (`discovery.rate_limit_seconds`) et le connecteur RSS
-entre deux flux (`delay_seconds`).
+une pause configurable entre connecteurs (`discovery.rate_limit_seconds`). Les connecteurs HTTP
+partagent en plus des nouvelles tentatives sur erreur passagère et un intervalle minimal par hôte
+(`request_interval_seconds`, `delay_seconds` pour RSS) : voir [discovery.md](discovery.md).
 
 ## Connecteurs disponibles
 

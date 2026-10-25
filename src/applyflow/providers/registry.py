@@ -148,6 +148,12 @@ def build_provider(spec: dict[str, Any], settings: Settings | None = None) -> Jo
     kind = str(spec.get("kind") or "").strip().lower()
     kind = _ALIASES.get(kind, kind)
     config = dict(spec.get("config") or {})
+    if settings is not None:
+        # Réglages communs de collecte : repli sur erreur passagère. Un connecteur peut les
+        # surcharger dans sa propre configuration (par campagne ou par source).
+        config.setdefault("retry_attempts", settings.discovery.retry_attempts)
+        config.setdefault("retry_base_seconds", settings.discovery.retry_base_seconds)
+        config.setdefault("retry_max_seconds", settings.discovery.retry_max_seconds)
     if kind == "adzuna" and settings is not None:
         # Les identifiants restent dans les réglages, jamais dans une campagne.
         config.setdefault("app_id", settings.adzuna.app_id)

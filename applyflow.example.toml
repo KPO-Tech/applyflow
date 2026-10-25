@@ -29,6 +29,10 @@ user_agent = "ApplyFlow/0.1 (local job application assistant; contact: local-use
 timeout_seconds = 20.0
 rate_limit_seconds = 1.0
 max_jobs_default = 1000
+# Erreur passagère (timeout, 429, 5xx) : essais, repli exponentiel et plafond du repli.
+retry_attempts = 3
+retry_base_seconds = 1.0
+retry_max_seconds = 20.0
 
 [scoring]
 excluded_seniority = ["lead", "principal", "staff", "head", "director"]

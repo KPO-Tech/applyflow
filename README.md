@@ -52,7 +52,7 @@ ApplyFlow n'est **pas** un robot de soumission massive.
 | Interface | Site web local 8 espaces : Tableau de bord, Profils & CV, Découverte, Campagnes, File de validation, Candidatures, Suivi e-mail, Réglages. Modules JS natifs, SVG et CSS, aucun framework front |
 | API | FastAPI locale sur `127.0.0.1`, documentation OpenAPI automatique |
 | Données | SQLite + SQLAlchemy 2 + migrations Alembic, journal d'audit, logs structurés JSON ou texte |
-| Qualité | 401 tests pytest (unitaires, intégration, API, CLI, Playwright), dont 3 parcours de bout en bout dans un vrai navigateur, Ruff, couverture globale 91 % |
+| Qualité | 416 tests pytest (unitaires, intégration, API, CLI, Playwright), dont 3 parcours de bout en bout dans un vrai navigateur, Ruff, couverture globale 91 % |
 
 ### Capacité 1 000 offres
 
@@ -301,7 +301,7 @@ Tableau complet, formats d'import et règles de conformité : [docs/connectors.m
 ## Tests
 
 ```bash
-uv run pytest                 # 401 tests, dont 5 Playwright (skippés si Chromium est absent)
+uv run pytest                 # 416 tests, dont 5 Playwright (skippés si Chromium est absent)
 uv run pytest tests/test_e2e_ui.py  # 3 parcours complets : serveur local + navigateur
 uv run pytest --cov=applyflow # couverture (~91 % global)
 uv run ruff check .           # ou : make check (lint + tests)

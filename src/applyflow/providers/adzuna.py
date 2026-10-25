@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import math
 import time
+from collections.abc import Callable
 from typing import Any
 
 import httpx
@@ -11,6 +12,7 @@ import httpx
 from applyflow.geo import detect_country, normalize_country
 from applyflow.providers.base import ProviderCapabilities, ProviderError
 from applyflow.providers.json_import import normalized_from_mapping
+from applyflow.providers.resilience import Pacer, RetryPolicy, request_with_retry
 from applyflow.schemas import JobQuery, NormalizedJob
 
 USER_AGENT = "ApplyFlow/0.1 (local job application assistant)"
@@ -51,6 +53,11 @@ class AdzunaProvider:
         source_name: str = "Adzuna",
         transport: httpx.BaseTransport | None = None,
         timeout_seconds: float = 20.0,
+        retry_attempts: int = 3,
+        retry_base_seconds: float = 1.0,
+        retry_max_seconds: float = 20.0,
+        request_interval_seconds: float = 0.35,
+        sleep: Callable[[float], None] = time.sleep,
         **_: Any,
     ) -> None:
         self.app_id = (app_id or "").strip()
@@ -61,6 +68,14 @@ class AdzunaProvider:
         self.source_name = source_name
         self._transport = transport
         self.timeout_seconds = timeout_seconds
+        # Une page Adzuna toutes les 350 ms au minimum, avec repli sur erreur passagère.
+        self.retry = RetryPolicy(
+            attempts=retry_attempts,
+            base_seconds=retry_base_seconds,
+            max_seconds=retry_max_seconds,
+        )
+        self.pacer = Pacer(request_interval_seconds, sleep=sleep)
+        self.sleep = sleep
         self.last_count = 0
         #: statistiques de la dernière collecte, par pays
         self.last_stats: dict[str, dict[str, Any]] = {}
@@ -145,8 +160,6 @@ class AdzunaProvider:
         page_size = min(MAX_PAGE_SIZE, max(1, remaining))
         pages = min(self.max_pages, max(1, math.ceil(remaining / page_size)))
         for page in range(1, pages + 1):
-            if page > 1:
-                time.sleep(0.35)
             params: dict[str, Any] = {
                 "app_id": self.app_id,
                 "app_key": self.app_key,
@@ -157,13 +170,23 @@ class AdzunaProvider:
                 params["what"] = " ".join(query.keywords)
             if where:
                 params["where"] = where
-            response = client.get(f"{self.base_url}/{country}/search/{page}", params=params)
-            if response.status_code in {401, 403}:
-                raise ProviderError(
-                    "Adzuna a refusé la clé (app_id ou app_key invalide). "
-                    "Vérifiez la clé dans Réglages → Collecte."
+            try:
+                response = request_with_retry(
+                    client,
+                    "GET",
+                    f"{self.base_url}/{country}/search/{page}",
+                    params=params,
+                    policy=self.retry,
+                    pacer=self.pacer,
+                    sleep=self.sleep,
                 )
-            response.raise_for_status()
+            except httpx.HTTPStatusError as exc:
+                if exc.response.status_code in {401, 403}:
+                    raise ProviderError(
+                        "Adzuna a refusé la clé (app_id ou app_key invalide). "
+                        "Vérifiez la clé dans Réglages → Collecte."
+                    ) from exc
+                raise
             payload = response.json()
             results = payload.get("results") or []
             self.last_count = int(payload.get("count") or 0)

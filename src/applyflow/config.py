@@ -87,6 +87,17 @@ class DiscoveryConfig(BaseModel):
     timeout_seconds: float = 20.0
     rate_limit_seconds: float = 1.0
     max_jobs_default: int = 1000
+    # Une erreur passagère (timeout, 429, 5xx) est retentée avec un repli exponentiel ;
+    # l'en-tête Retry-After est respecté. Une erreur définitive (403, 404) n'est pas retentée.
+    retry_attempts: int = Field(default=3, ge=1, le=10)
+    retry_base_seconds: float = Field(default=1.0, ge=0, le=60)
+    retry_max_seconds: float = Field(default=20.0, ge=0, le=300)
+
+    @model_validator(mode="after")
+    def _retry_window(self) -> DiscoveryConfig:
+        if self.retry_max_seconds < self.retry_base_seconds:
+            raise ValueError("retry_max_seconds doit être supérieur ou égal à retry_base_seconds")
+        return self
 
 
 class AdzunaConfig(BaseModel):

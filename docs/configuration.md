@@ -50,6 +50,9 @@ Voir [laya.md](laya.md) pour le contrat et ses limites.
 | `timeout_seconds` | `20` | Timeout des connecteurs |
 | `rate_limit_seconds` | `1.0` | Pause entre connecteurs (séquentiel) |
 | `max_jobs_default` | `1000` | Référence de capacité (les campagnes portent leur propre plafond) |
+| `retry_attempts` | `3` | Essais par requête sur erreur passagère (timeout, 429, 5xx) ; 1 à 10 |
+| `retry_base_seconds` | `1.0` | Délai du premier repli, doublé à chaque échec |
+| `retry_max_seconds` | `20.0` | Plafond du repli et d'un `Retry-After` très long |
 
 ### `[adzuna]`
 

@@ -74,6 +74,26 @@ un slug avant de le garder.
 
 ---
 
+# Reprises et débit des requêtes
+
+Les connecteurs HTTP (Greenhouse, Lever, RSS, import d'URL, Adzuna) partagent deux garde-fous,
+réglés dans `[discovery]` et surchargeables par source (mêmes clés dans la configuration de la
+source, plus `request_interval_seconds`) :
+
+* **Nouvelles tentatives.** Un timeout, une connexion coupée, un 429 ou un 5xx sont retentés
+  jusqu'à `retry_attempts` essais (3 par défaut), avec un délai qui double à chaque échec
+  (`retry_base_seconds`, plafonné par `retry_max_seconds`) et un aléa de ±25 % pour éviter les
+  rafales synchronisées. Un `Retry-After` est respecté tel quel.
+* **Erreurs définitives.** Un 403, un 404 ou une clé refusée ne sont jamais retentés : le message
+  remonte immédiatement, sans faire attendre la collecte.
+* **Débit par hôte.** Deux requêtes vers le même hôte sont espacées d'au moins
+  `request_interval_seconds` (350 ms par défaut pour Adzuna, `delay_seconds` pour un flux RSS) ;
+  deux hôtes différents ne s'attendent pas entre eux.
+
+JobSpy et les ATS publics gardent leurs propres garde-fous : pauses entre sites, plafond
+quotidien par site, et une entreprise en échec n'empêche pas les autres. Chaque nouvelle
+tentative est écrite dans le journal structuré (URL, essai, statut, délai).
+
 # Plafond quotidien par site
 
 Pour protéger votre adresse IP, chaque site JobSpy a un **plafond d'offres collectées par jour**,

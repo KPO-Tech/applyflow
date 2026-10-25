@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import time
+from collections.abc import Callable
 from typing import Any
 
 import feedparser
@@ -21,6 +22,7 @@ from applyflow.providers.normalize import (
     infer_seniority,
     parse_datetime,
 )
+from applyflow.providers.resilience import Pacer, RetryPolicy, request_with_retry
 from applyflow.schemas import JobQuery, NormalizedJob
 from applyflow.text import slugify
 
@@ -29,6 +31,34 @@ USER_AGENT = "ApplyFlow/0.1 (local job application assistant)"
 
 class _HttpProvider:
     timeout_seconds: float = 20.0
+    retry: RetryPolicy = RetryPolicy()
+    pacer: Pacer = Pacer(0.0)
+    sleep: Callable[[float], None]
+
+    def _configure_retry(
+        self,
+        *,
+        retry_attempts: int = 3,
+        retry_base_seconds: float = 1.0,
+        retry_max_seconds: float = 20.0,
+        request_interval_seconds: float = 0.0,
+        sleep: Callable[[float], None] = time.sleep,
+    ) -> None:
+        """Repli exponentiel sur erreur passagère et intervalle minimal par hôte."""
+        self.retry = RetryPolicy(
+            attempts=retry_attempts,
+            base_seconds=retry_base_seconds,
+            max_seconds=retry_max_seconds,
+        )
+        self.pacer = Pacer(request_interval_seconds, sleep=sleep)
+        self.sleep = sleep
+
+    def _get(
+        self, client: httpx.Client, url: str, **params: Any
+    ) -> httpx.Response:
+        return request_with_retry(
+            client, "GET", url, policy=self.retry, pacer=self.pacer, sleep=self.sleep, **params
+        )
 
     def _client(self, transport: httpx.BaseTransport | None = None) -> httpx.Client:
         return httpx.Client(
@@ -65,6 +95,11 @@ class GreenhouseProvider(_HttpProvider):
         source_name: str = "Greenhouse",
         transport: httpx.BaseTransport | None = None,
         timeout_seconds: float = 20.0,
+        retry_attempts: int = 3,
+        retry_base_seconds: float = 1.0,
+        retry_max_seconds: float = 20.0,
+        request_interval_seconds: float = 0.0,
+        sleep: Callable[[float], None] = time.sleep,
         **_: Any,
     ) -> None:
         if not board_token:
@@ -74,13 +109,19 @@ class GreenhouseProvider(_HttpProvider):
         self.source_name = source_name
         self._transport = transport
         self.timeout_seconds = timeout_seconds
+        self._configure_retry(
+            retry_attempts=retry_attempts,
+            retry_base_seconds=retry_base_seconds,
+            retry_max_seconds=retry_max_seconds,
+            request_interval_seconds=request_interval_seconds,
+            sleep=sleep,
+        )
 
     def fetch(self, query: JobQuery) -> list[NormalizedJob]:
         url = f"{self.base_url}/{self.board_token}/jobs"
         try:
             with self._client(self._transport) as client:
-                response = client.get(url, params={"content": "true"})
-                response.raise_for_status()
+                response = self._get(client, url, params={"content": "true"})
                 payload = response.json()
         except (httpx.HTTPError, ValueError) as exc:
             raise ProviderError(f"Greenhouse indisponible : {exc}") from exc
@@ -135,6 +176,11 @@ class LeverProvider(_HttpProvider):
         source_name: str = "Lever",
         transport: httpx.BaseTransport | None = None,
         timeout_seconds: float = 20.0,
+        retry_attempts: int = 3,
+        retry_base_seconds: float = 1.0,
+        retry_max_seconds: float = 20.0,
+        request_interval_seconds: float = 0.0,
+        sleep: Callable[[float], None] = time.sleep,
         **_: Any,
     ) -> None:
         if not company:
@@ -144,13 +190,19 @@ class LeverProvider(_HttpProvider):
         self.source_name = source_name
         self._transport = transport
         self.timeout_seconds = timeout_seconds
+        self._configure_retry(
+            retry_attempts=retry_attempts,
+            retry_base_seconds=retry_base_seconds,
+            retry_max_seconds=retry_max_seconds,
+            request_interval_seconds=request_interval_seconds,
+            sleep=sleep,
+        )
 
     def fetch(self, query: JobQuery) -> list[NormalizedJob]:
         url = f"{self.base_url}/{self.company}"
         try:
             with self._client(self._transport) as client:
-                response = client.get(url, params={"mode": "json"})
-                response.raise_for_status()
+                response = self._get(client, url, params={"mode": "json"})
                 payload = response.json()
         except (httpx.HTTPError, ValueError) as exc:
             raise ProviderError(f"Lever indisponible : {exc}") from exc
@@ -209,6 +261,11 @@ class RssProvider(_HttpProvider):
         transport: httpx.BaseTransport | None = None,
         timeout_seconds: float = 20.0,
         delay_seconds: float = 1.0,
+        retry_attempts: int = 3,
+        retry_base_seconds: float = 1.0,
+        retry_max_seconds: float = 20.0,
+        request_interval_seconds: float | None = None,
+        sleep: Callable[[float], None] = time.sleep,
         **_: Any,
     ) -> None:
         if not feeds:
@@ -219,16 +276,22 @@ class RssProvider(_HttpProvider):
         self._transport = transport
         self.timeout_seconds = timeout_seconds
         self.delay_seconds = max(0.0, delay_seconds)
+        # `delay_seconds` reste l'intervalle par défaut entre deux flux d'un même hôte.
+        interval = self.delay_seconds if request_interval_seconds is None else request_interval_seconds
+        self._configure_retry(
+            retry_attempts=retry_attempts,
+            retry_base_seconds=retry_base_seconds,
+            retry_max_seconds=retry_max_seconds,
+            request_interval_seconds=max(0.0, interval),
+            sleep=sleep,
+        )
 
     def fetch(self, query: JobQuery) -> list[NormalizedJob]:
         jobs: list[NormalizedJob] = []
-        for index, feed_url in enumerate(self.feeds):
-            if index > 0 and self.delay_seconds:
-                time.sleep(self.delay_seconds)
+        for feed_url in self.feeds:
             try:
                 with self._client(self._transport) as client:
-                    response = client.get(feed_url)
-                    response.raise_for_status()
+                    response = self._get(client, feed_url)
                 parsed = feedparser.parse(response.content)
             except httpx.HTTPError as exc:
                 raise ProviderError(f"flux RSS inaccessible ({feed_url}) : {exc}") from exc
@@ -276,6 +339,11 @@ class SingleUrlProvider(_HttpProvider):
         source_name: str = "Import URL",
         transport: httpx.BaseTransport | None = None,
         timeout_seconds: float = 20.0,
+        retry_attempts: int = 3,
+        retry_base_seconds: float = 1.0,
+        retry_max_seconds: float = 20.0,
+        request_interval_seconds: float = 0.0,
+        sleep: Callable[[float], None] = time.sleep,
         **_: Any,
     ) -> None:
         if not url.startswith(("http://", "https://")):
@@ -284,12 +352,18 @@ class SingleUrlProvider(_HttpProvider):
         self.source_name = source_name
         self._transport = transport
         self.timeout_seconds = timeout_seconds
+        self._configure_retry(
+            retry_attempts=retry_attempts,
+            retry_base_seconds=retry_base_seconds,
+            retry_max_seconds=retry_max_seconds,
+            request_interval_seconds=request_interval_seconds,
+            sleep=sleep,
+        )
 
     def fetch(self, query: JobQuery) -> list[NormalizedJob]:
         try:
             with self._client(self._transport) as client:
-                response = client.get(self.url)
-                response.raise_for_status()
+                response = self._get(client, self.url)
         except httpx.HTTPStatusError as exc:
             status = exc.response.status_code
             hint = ""

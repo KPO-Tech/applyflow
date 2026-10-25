@@ -12,7 +12,7 @@ Dernière mise à jour : 2026-10-25. Ce document remplace toute promesse implici
 | 4 — Intelligence | 🟡 Partielle | Routage déterministe + scoring complets ; Laya natif impossible (pas d'API CV), adaptateur fourni ; modèle de décision **mesuré et écarté** |
 | 5 — Candidatures | 🟡 Partielle | Dry-run, analyse/préremplissage HTML, réponses, approbation, suivi ; pas de soumission automatique |
 | 6 — Campagnes | ✅ Terminée | 1 000 offres, **exécution en arrière-plan**, pause/reprise/annulation, idempotence, tableau de bord, exports |
-| Transverse | ✅ Terminée | API locale, CLI, site web 8 espaces, logs structurés, audit, docs, 401 tests (91 % de couverture) dont 3 parcours de bout en bout dans le navigateur, benchmark 1 000 |
+| Transverse | ✅ Terminée | API locale, CLI, site web 8 espaces, logs structurés, audit, docs, 416 tests (91 % de couverture) dont 3 parcours de bout en bout dans le navigateur, benchmark 1 000 |
 
 ## Détail
 
@@ -42,6 +42,10 @@ Dernière mise à jour : 2026-10-25. Ce document remplace toute promesse implici
   localement, masqués dans l'API et testables depuis Réglages → Collecte.
 * Normalisation : HTML, télétravail, contrat, séniorité, compétences, salaire, dates.
 * Dédoublonnage interplateformes (empreinte métier + URL canonique) et testé.
+* **Reprises et débit** : les connecteurs HTTP retentent une erreur passagère (timeout, 429, 5xx)
+  avec un repli exponentiel plafonné, respectent `Retry-After`, ne retentent jamais un 403/404, et
+  espacent leurs requêtes par hôte (`request_interval_seconds`, `delay_seconds` pour RSS).
+  Réglages dans `[discovery]`, surchargeables par source ; chaque tentative est journalisée.
 * JobSpy (job boards) et ats-scrapers (ATS publics) en **opt-in** : désactivés par défaut dans
   le code et l'exemple, activés par un `applyflow.toml` local après confirmation dans l'interface.
   WTTJ et Workday restent non moissonnés ; conditions documentées.
@@ -133,13 +137,12 @@ Dernière mise à jour : 2026-10-25. Ce document remplace toute promesse implici
 
 ### P1 — prochaines améliorations utiles
 
-1. Retry/backoff par connecteur et limites de débit par source.
-2. Signal d'embeddings local (bge-m3 / bge-reranker) ajouté au score, avec repli : seule piste
+1. Signal d'embeddings local (bge-m3 / bge-reranker) ajouté au score, avec repli : seule piste
    nettement supérieure au score actuel dans la mesure ([decision-model.md](decision-model.md)).
-3. Extraction texte des CV (pypdf) pour des raisons de routage plus riches.
-4. Adaptateurs de préremplissage par ATS lorsque leurs conditions l'autorisent ; palier 1 de
+2. Extraction texte des CV (pypdf) pour des raisons de routage plus riches.
+3. Adaptateurs de préremplissage par ATS lorsque leurs conditions l'autorisent ; palier 1 de
    [agent-navigation.md](agent-navigation.md) (suivre le lien « Postuler ») avant tout agent.
-5. Test de bout en bout du parcours de validation (préparation → approbation → enregistrement de
+4. Test de bout en bout du parcours de validation (préparation → approbation → enregistrement de
    la soumission) : les parcours profil, import d'offres et campagne sont désormais couverts dans
    `tests/test_e2e_ui.py`.
 

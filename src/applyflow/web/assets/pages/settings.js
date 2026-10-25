@@ -347,6 +347,11 @@ function collecteSection(settings) {
             <input class="input" id="discovery-rate" name="rate_limit_seconds" type="number" min="0" max="30" step="0.5" value="${esc(discovery.rate_limit_seconds ?? 1)}" />
           </div>
           <div class="field">
+            <label for="discovery-retry">Tentatives par requête</label>
+            <input class="input" id="discovery-retry" name="retry_attempts" type="number" min="1" max="10" value="${esc(discovery.retry_attempts ?? 3)}" />
+            <span class="hint">Erreur passagère seulement (timeout, 429, 5xx), avec un délai croissant.</span>
+          </div>
+          <div class="field">
             <label for="discovery-timeout">Timeout (secondes)</label>
             <input class="input" id="discovery-timeout" name="timeout_seconds" type="number" min="1" max="120" value="${esc(discovery.timeout_seconds ?? 20)}" />
           </div>
@@ -717,6 +722,7 @@ export async function render(container, ctx) {
           };
       } else if (form.dataset.settings === "discovery") {
         const rate = Number(form.elements.rate_limit_seconds.value);
+        const retries = Number(form.elements.retry_attempts.value);
         const timeout = Number(form.elements.timeout_seconds.value);
         const maxJobs = Number(form.elements.max_jobs_default.value);
         const adzunaId = String(form.elements.adzuna_app_id.value || "").trim();
@@ -725,6 +731,8 @@ export async function render(container, ctx) {
         const adzunaPages = Number(form.elements.adzuna_max_pages.value);
         const adzunaCountry = String(form.elements.adzuna_country.value || "fr").trim().toLowerCase();
         if (!(rate >= 0)) problem = "La pause entre requêtes ne peut pas être négative.";
+        else if (!(Number.isInteger(retries) && retries >= 1 && retries <= 10))
+          problem = "Les tentatives se comptent entre 1 et 10.";
         else if (!(timeout > 0)) problem = "Le timeout doit être supérieur à zéro.";
         else if (!(maxJobs > 0)) problem = "Le plafond doit être supérieur à zéro.";
         else if (Boolean(adzunaId) !== Boolean(adzunaKey)) {
@@ -737,6 +745,7 @@ export async function render(container, ctx) {
           payload = {
             discovery: {
               rate_limit_seconds: rate,
+              retry_attempts: retries,
               timeout_seconds: timeout,
               max_jobs_default: maxJobs,
               user_agent: String(form.elements.user_agent.value || "").trim(),
