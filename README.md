@@ -1,6 +1,6 @@
 # ApplyFlow
 
-[![CI](https://github.com/EngineerProjects/applyflow/actions/workflows/ci.yml/badge.svg)](https://github.com/EngineerProjects/applyflow/actions/workflows/ci.yml)
+[![CI](https://github.com/KPO-Tech/applyflow/actions/workflows/ci.yml/badge.svg)](https://github.com/KPO-Tech/applyflow/actions/workflows/ci.yml)
 
 Application **locale**, **exécutable** et **explicable** de gestion de candidatures : backend
 Python 3.12, interface web HTML/CSS/JS sans étape de build. Elle collecte des offres, sélectionne
