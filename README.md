@@ -1,5 +1,7 @@
 # ApplyFlow
 
+[![CI](https://github.com/EngineerProjects/applyflow/actions/workflows/ci.yml/badge.svg)](https://github.com/EngineerProjects/applyflow/actions/workflows/ci.yml)
+
 Application **locale**, **exécutable** et **explicable** de gestion de candidatures : backend
 Python 3.12, interface web HTML/CSS/JS sans étape de build. Elle collecte des offres, sélectionne
 le profil/ CV le plus adapté,
@@ -299,7 +301,7 @@ Tableau complet, formats d'import et règles de conformité : [docs/connectors.m
 ## Tests
 
 ```bash
-uv run pytest                 # 394 tests, dont 1 test Playwright (skip si Chromium absent)
+uv run pytest                 # 398 tests, dont 2 Playwright (skippés si Chromium est absent)
 uv run pytest --cov=applyflow # couverture (~91 % global)
 uv run ruff check .
 ```
@@ -309,6 +311,31 @@ contextuelle, scoring/portes, routeur + fallback + contrat HTTP, connecteurs (Mo
 profils/CV, analyse de formulaires, préparation dry-run, questions inconnues, approbation,
 soumission unique, reprise de campagne, idempotence, campagnes en arrière-plan (progression,
 arrêt, une seule à la fois), CLI, parsing IMAP des réponses, export, API.
+
+## Intégration continue et publication
+
+Chaque poussée sur `main` et chaque proposition de fusion rejoue sur GitHub Actions ce que
+`make check` fait en local, et davantage ([ci.yml](.github/workflows/ci.yml)) :
+
+| Job | Contenu |
+|---|---|
+| Ruff | analyse statique, dépendances installées depuis `uv.lock` |
+| Tests | suite complète, Chromium installé au préalable |
+| Paquet | `uv build`, ressources web présentes dans le wheel, installation du wheel dans un environnement vierge et `applyflow --help` |
+
+**Publier une version.** Le tag doit correspondre exactement à `version` dans `pyproject.toml` :
+
+```bash
+uv version --bump minor        # ou modifier `version` à la main
+git commit -am "chore: version 0.2.0"
+git tag v0.2.0
+git push origin main --tags
+```
+
+[release.yml](.github/workflows/release.yml) appelle d'abord `ci.yml` comme workflow réutilisable :
+rien n'est publié si les vérifications échouent. La version GitHub est ensuite créée avec les notes
+calculées depuis le tag précédent et les artefacts `dist/` (wheel + archive source). Aucun secret à
+créer : `GITHUB_TOKEN` suffit, et rien n'est envoyé vers PyPI.
 
 ## Limites connues
 

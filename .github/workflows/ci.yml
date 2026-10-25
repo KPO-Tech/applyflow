@@ -1,0 +1,94 @@
+name: CI
+
+# Chaque poussée sur main et chaque proposition de fusion rejoue ce que `make check`
+# fait en local, plus la vérification que le paquet construit s'installe et démarre.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  # Appelé par release.yml : aucune version n'est publiée avant d'être verte.
+  workflow_call:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Les tests ne doivent jamais toucher au trousseau du système.
+  APPLYFLOW_NO_KEYRING: "1"
+
+jobs:
+  lint:
+    name: Ruff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Dépendances depuis le verrou
+        run: uv sync --frozen --extra boards
+      - name: Analyse statique
+        run: uv run ruff check .
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Dépendances depuis le verrou
+        run: uv sync --frozen --extra boards
+      - name: Navigateur Chromium
+        # --with-deps installe les bibliothèques système dont Chromium a besoin.
+        run: uv run playwright install --with-deps chromium
+      - name: Suite complète
+        run: uv run pytest -ra
+
+  package:
+    name: Paquet installable
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Construction du wheel et de l'archive source
+        run: uv build
+      - name: Les ressources web sont bien dans le wheel
+        run: |
+          uv run python - <<'PY'
+          import glob, sys, zipfile
+
+          wheel = glob.glob("dist/*.whl")[0]
+          names = zipfile.ZipFile(wheel).namelist()
+          requis = ("applyflow/web/index.html", "applyflow/web/assets/app.js")
+          absents = [r for r in requis if not any(n.endswith(r) for n in names)]
+          if absents:
+              sys.exit(f"ressources absentes du wheel : {', '.join(absents)}")
+          print(f"{wheel} : {len(names)} fichiers, ressources web présentes")
+          PY
+      - name: Installation dans un environnement vierge
+        run: |
+          uv venv "$RUNNER_TEMP/applyflow-smoke"
+          uv pip install --python "$RUNNER_TEMP/applyflow-smoke/bin/python" dist/*.whl
+          "$RUNNER_TEMP/applyflow-smoke/bin/applyflow" --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error

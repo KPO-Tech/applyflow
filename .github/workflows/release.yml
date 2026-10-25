@@ -1,0 +1,56 @@
+name: Release
+
+# Publication d'une version : étiqueter un commit sur main suffit.
+#   uv version --bump minor   (ou modifier `version` dans pyproject.toml)
+#   git commit -am "chore: version 0.2.0"
+#   git tag v0.2.0 && git push origin main --tags
+# Le tag doit correspondre exactement à la version du paquet, sinon le job s'arrête.
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    name: Vérifications
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    name: ${{ github.ref_name }}
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Historique complet : les notes de version sont calculées depuis le tag précédent.
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Le tag correspond à la version du paquet
+        run: |
+          version=$(python - <<'PY'
+          import pathlib, tomllib
+          print(tomllib.loads(pathlib.Path("pyproject.toml").read_text())["project"]["version"])
+          PY
+          )
+          echo "tag=${GITHUB_REF_NAME} version=${version}"
+          if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then
+            echo "::error::Le tag ${GITHUB_REF_NAME} ne correspond pas à la version ${version} de pyproject.toml."
+            exit 1
+          fi
+      - name: Construction
+        run: uv build
+      - name: Publication de la version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" dist/* \
+            --title "ApplyFlow ${GITHUB_REF_NAME#v}" \
+            --generate-notes \
+            --verify-tag
