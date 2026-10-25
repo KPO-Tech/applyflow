@@ -27,8 +27,8 @@ jobs:
     name: Ruff
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
         with:
           python-version: "3.12"
           enable-cache: true
@@ -43,8 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
         with:
           python-version: "3.12"
           enable-cache: true
@@ -61,33 +61,37 @@ jobs:
     name: Paquet installable
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
         with:
           python-version: "3.12"
           enable-cache: true
           cache-dependency-glob: uv.lock
       - name: Construction du wheel et de l'archive source
         run: uv build
-      - name: Les ressources web sont bien dans le wheel
+      - name: Les ressources embarquées sont bien dans le wheel
         run: |
           uv run python - <<'PY'
           import glob, sys, zipfile
 
           wheel = glob.glob("dist/*.whl")[0]
           names = zipfile.ZipFile(wheel).namelist()
-          requis = ("applyflow/web/index.html", "applyflow/web/assets/app.js")
+          requis = (
+              "applyflow/web/index.html",
+              "applyflow/web/assets/app.js",
+              "applyflow/data/fixtures/jobs.json",
+          )
           absents = [r for r in requis if not any(n.endswith(r) for n in names)]
           if absents:
               sys.exit(f"ressources absentes du wheel : {', '.join(absents)}")
-          print(f"{wheel} : {len(names)} fichiers, ressources web présentes")
+          print(f"{wheel} : {len(names)} fichiers, ressources embarquées présentes")
           PY
       - name: Installation dans un environnement vierge
         run: |
           uv venv "$RUNNER_TEMP/applyflow-smoke"
           uv pip install --python "$RUNNER_TEMP/applyflow-smoke/bin/python" dist/*.whl
           "$RUNNER_TEMP/applyflow-smoke/bin/applyflow" --help
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/

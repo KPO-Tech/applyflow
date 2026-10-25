@@ -1,0 +1,663 @@
+{
+  "version": 1,
+  "note": "Annonces entièrement fictives. Entreprises, URLs et salaires sont inventés pour les tests et la démonstration hors ligne.",
+  "jobs": [
+    {
+      "external_id": "nova-101",
+      "url": "https://jobs.example.com/nova-retail/junior-data-engineer",
+      "apply_url": "demo://greenhouse",
+      "company": "Nova Retail",
+      "title": "Junior Data Engineer",
+      "description": "Nous recherchons un Data Engineer junior pour construire nos pipelines de données retail. Vous travaillerez avec Python, SQL, Airflow et dbt sur Snowflake. 1 à 2 ans d'expérience en data engineering. Poste basé à Paris, hybride (2 jours sur site). CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "junior",
+      "skills": [
+        "Python",
+        "SQL",
+        "Airflow",
+        "dbt",
+        "Snowflake"
+      ],
+      "salary_min": 40000,
+      "salary_max": 48000,
+      "salary_currency": "EUR",
+      "published_at": "2026-10-12T09:00:00+00:00"
+    },
+    {
+      "external_id": "nova-101-bis",
+      "url": "https://careers.example.org/offres/nova-data-engineer-junior",
+      "company": "Nova Retail SAS",
+      "title": "Junior Data Engineer (H/F)",
+      "description": "Même poste publié sur un autre portail. Python, SQL, Airflow, dbt, Snowflake. Paris, hybride. CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "skills": [
+        "Python",
+        "SQL",
+        "Airflow",
+        "dbt"
+      ],
+      "published_at": "2026-10-13T09:00:00+00:00",
+      "apply_url": "demo://greenhouse"
+    },
+    {
+      "external_id": "lumen-201",
+      "url": "https://jobs.example.com/lumen/data-analyst-junior",
+      "apply_url": "demo://lever",
+      "company": "Fintech Lumen",
+      "title": "Data Analyst Junior",
+      "description": "Rejoignez l'équipe data d'une fintech en croissance. Vous produirez des tableaux de bord Power BI, des requêtes SQL et des analyses marketing. Profil junior ou jeune diplômé accepté. Poste à Lyon, CDI.",
+      "location": "Lyon, France",
+      "remote": "onsite",
+      "contract_type": "CDI",
+      "seniority": "junior",
+      "skills": [
+        "SQL",
+        "Power BI",
+        "Excel",
+        "Statistics"
+      ],
+      "salary_min": 34000,
+      "salary_max": 40000,
+      "salary_currency": "EUR",
+      "published_at": "2026-10-10T08:30:00+00:00"
+    },
+    {
+      "external_id": "medimind-301",
+      "url": "https://jobs.example.com/medimind/ai-engineer-junior",
+      "apply_url": "demo://custom",
+      "company": "MediMind",
+      "title": "AI Engineer (Junior)",
+      "description": "Nous construisons des assistants cliniques fondés sur des LLM. Vous développerez des services Python, des modèles PyTorch et des pipelines NLP. 0 à 2 ans d'expérience. Télétravail possible depuis la France.",
+      "location": "Paris, France",
+      "remote": "remote",
+      "contract_type": "CDI",
+      "seniority": "junior",
+      "skills": [
+        "Python",
+        "PyTorch",
+        "LLM",
+        "NLP",
+        "FastAPI"
+      ],
+      "salary_min": 42000,
+      "salary_max": 52000,
+      "salary_currency": "EUR",
+      "published_at": "2026-10-14T11:00:00+00:00"
+    },
+    {
+      "external_id": "shoply-401",
+      "url": "https://jobs.example.com/shoply/data-scientist-entry",
+      "company": "Shoply",
+      "title": "Data Scientist — Entry Level",
+      "description": "Poste entry level ouvert aux jeunes diplômés. Vous travaillerez sur l'expérimentation A/B, la segmentation client et la prévision de la demande avec Python, pandas et scikit-learn. Full remote en France. CDI.",
+      "location": "Remote (France)",
+      "remote": "remote",
+      "contract_type": "CDI",
+      "seniority": "entry",
+      "skills": [
+        "Python",
+        "pandas",
+        "scikit-learn",
+        "A/B testing",
+        "Statistics"
+      ],
+      "salary_min": 38000,
+      "salary_max": 45000,
+      "salary_currency": "EUR",
+      "published_at": "2026-10-15T07:45:00+00:00",
+      "apply_url": "demo://custom"
+    },
+    {
+      "external_id": "cloudforge-501",
+      "url": "https://jobs.example.com/cloudforge/python-developer-junior",
+      "apply_url": "demo://simple",
+      "company": "CloudForge",
+      "title": "Python Developer Junior",
+      "description": "Développez des APIs REST avec FastAPI et PostgreSQL dans une équipe produit. Environnement Docker, tests pytest, Git. Un à deux ans d'expérience suffisent. Lyon, CDI, deux jours de télétravail par semaine.",
+      "location": "Lyon, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "junior",
+      "skills": [
+        "Python",
+        "FastAPI",
+        "PostgreSQL",
+        "Docker",
+        "pytest",
+        "Git"
+      ],
+      "salary_min": 36000,
+      "salary_max": 44000,
+      "salary_currency": "EUR",
+      "published_at": "2026-10-09T16:20:00+00:00"
+    },
+    {
+      "external_id": "orbital-601",
+      "url": "https://jobs.example.com/orbital-bank/senior-data-engineer",
+      "company": "Orbital Bank",
+      "title": "Senior Data Engineer",
+      "description": "Poste senior. Au moins 6 ans d'expérience en data engineering exigés, sur Spark, Kafka et Snowflake. Vous encadrerez deux ingénieurs juniors. Paris, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "senior",
+      "skills": [
+        "Python",
+        "Spark",
+        "Kafka",
+        "Snowflake",
+        "SQL"
+      ],
+      "salary_min": 65000,
+      "salary_max": 80000,
+      "salary_currency": "EUR",
+      "published_at": "2026-10-08T10:00:00+00:00",
+      "apply_url": "demo://greenhouse"
+    },
+    {
+      "external_id": "atlas-701",
+      "url": "https://jobs.example.com/atlas/lead-data-analyst",
+      "company": "Atlas Consulting",
+      "title": "Lead Data Analyst",
+      "description": "Nous recherchons un Lead Data Analyst pour piloter une équipe de trois analystes. Vous travaillerez avec des stakeholders senior et présenterez aux comités de direction. 5 ans d'expérience minimum. Paris.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "lead",
+      "skills": [
+        "SQL",
+        "Tableau",
+        "Power BI",
+        "Data modeling"
+      ],
+      "published_at": "2026-10-07T13:10:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "retailx-801",
+      "url": "https://jobs.example.com/retailx/data-analyst-3y",
+      "company": "RetailX",
+      "title": "Data Analyst",
+      "description": "Vous analyserez les performances commerciales de nos magasins. 3+ years of experience required in a data analyst role. SQL, Excel et Power BI indispensables. Poste à Paris en CDI.",
+      "location": "Paris, France",
+      "remote": "onsite",
+      "contract_type": "CDI",
+      "seniority": "mid",
+      "skills": [
+        "SQL",
+        "Excel",
+        "Power BI"
+      ],
+      "published_at": "2026-10-11T09:30:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "insight-901",
+      "url": "https://jobs.example.com/insight/data-scientist-preferred",
+      "company": "InsightCo",
+      "title": "Data Scientist",
+      "description": "Vous développerez des modèles de churn et de recommandation. Trois ans d'expérience en data science sont préférés, mais les profils juniors très motivés sont bienvenus. Python, SQL, scikit-learn. Paris, hybride, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "skills": [
+        "Python",
+        "SQL",
+        "scikit-learn",
+        "Machine Learning"
+      ],
+      "published_at": "2026-10-06T14:00:00+00:00",
+      "apply_url": "demo://custom"
+    },
+    {
+      "external_id": "healthplus-1001",
+      "url": "https://jobs.example.com/healthplus/data-analyst-context",
+      "company": "HealthPlus",
+      "title": "Data Analyst",
+      "description": "Vous produirez des analyses pour améliorer les parcours de soins. Vous collaborerez avec des équipes senior et présenterez vos résultats aux responsables métier. SQL et Tableau. Aucune expérience préalable exigée. Paris, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "skills": [
+        "SQL",
+        "Tableau",
+        "Data visualization"
+      ],
+      "published_at": "2026-10-05T12:00:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "dataport-1101",
+      "url": "https://jobs.example.com/dataport/data-engineer-02",
+      "company": "DataPort",
+      "title": "Data Engineer",
+      "description": "Nous accueillons un Data Engineer débutant ou jeune diplômé. 0-2 years of experience. Vous construirez des pipelines avec Python, Airflow et dbt sur BigQuery. Marseille, CDI.",
+      "location": "Marseille, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "entry",
+      "skills": [
+        "Python",
+        "Airflow",
+        "dbt",
+        "BigQuery"
+      ],
+      "published_at": "2026-10-04T08:00:00+00:00",
+      "apply_url": "demo://greenhouse"
+    },
+    {
+      "external_id": "berlin-1201",
+      "url": "https://jobs.example.com/berlin-data/data-analyst",
+      "company": "Berlin Data GmbH",
+      "title": "Data Analyst",
+      "description": "Data Analyst role in Berlin. SQL, Python and Tableau. Junior profile welcome. Hybrid work, permanent contract.",
+      "location": "Berlin, Germany",
+      "remote": "hybrid",
+      "contract_type": "permanent",
+      "seniority": "junior",
+      "skills": [
+        "SQL",
+        "Python",
+        "Tableau"
+      ],
+      "published_at": "2026-10-03T10:00:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "usremote-1301",
+      "url": "https://jobs.example.com/usremote/data-analyst",
+      "company": "NorthStar Analytics",
+      "title": "Data Analyst",
+      "description": "Fully remote within the United States. You must be authorized to work in the United States. SQL, Excel and Tableau. Entry level accepted. Permanent contract.",
+      "location": "Remote (United States)",
+      "remote": "remote",
+      "contract_type": "permanent",
+      "seniority": "entry",
+      "skills": [
+        "SQL",
+        "Excel",
+        "Tableau"
+      ],
+      "published_at": "2026-10-02T15:00:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "greenledger-1401",
+      "url": "https://jobs.example.com/greenledger/intern-data-analyst",
+      "company": "GreenLedger",
+      "title": "Stage — Data Analyst",
+      "description": "Stage de six mois en analyse de données ESG. Excel, SQL et Power BI. Aucune expérience requise, étudiant en dernière année accepté. Paris, présentiel. Convention de stage obligatoire.",
+      "location": "Paris, France",
+      "remote": "onsite",
+      "contract_type": "internship",
+      "seniority": "intern",
+      "skills": [
+        "Excel",
+        "SQL",
+        "Power BI"
+      ],
+      "published_at": "2026-10-01T09:00:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "nova-1501",
+      "url": "https://jobs.example.com/nova-retail/graduate-data-engineer",
+      "company": "Nova Retail",
+      "title": "Graduate Data Engineer",
+      "description": "Programme graduate de 12 mois pour jeunes diplômés. Python, SQL et dbt. Formation assurée. Paris, hybride, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "entry",
+      "skills": [
+        "Python",
+        "SQL",
+        "dbt"
+      ],
+      "published_at": "2026-09-30T08:30:00+00:00",
+      "apply_url": "demo://greenhouse"
+    },
+    {
+      "external_id": "vision-1601",
+      "url": "https://jobs.example.com/visionlabs/ai-engineer-mid",
+      "company": "VisionLabs",
+      "title": "AI Engineer (Mid-Level)",
+      "description": "Vous développerez des modèles de computer vision et les déploierez avec Docker. PyTorch, Python et MLflow. Trois ans d'expérience souhaités. Paris, hybride, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "mid",
+      "skills": [
+        "Python",
+        "PyTorch",
+        "Computer vision",
+        "Docker",
+        "MLflow"
+      ],
+      "published_at": "2026-09-29T11:00:00+00:00",
+      "apply_url": "demo://custom"
+    },
+    {
+      "external_id": "metro-1701",
+      "url": "https://jobs.example.com/metro-market/bi-analyst-cdd",
+      "company": "Métro Market",
+      "title": "BI Analyst",
+      "description": "CDD de 12 mois renouvelable. Vous créez des rapports Power BI et des requêtes SQL pour le pilotage commercial. Jeune diplômé accepté. Paris, présentiel.",
+      "location": "Paris, France",
+      "remote": "onsite",
+      "contract_type": "CDD",
+      "seniority": "entry",
+      "skills": [
+        "Power BI",
+        "SQL",
+        "Excel",
+        "Reporting"
+      ],
+      "published_at": "2026-09-28T10:15:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "shoply-1801",
+      "url": "https://jobs.example.com/shoply/python-developer-remote",
+      "company": "Shoply",
+      "title": "Python Developer",
+      "description": "Rejoignez notre équipe plateforme. Python, Django, REST API et AWS. Télétravail complet en France. One to three years of experience welcome. CDI.",
+      "location": "Remote (France)",
+      "remote": "remote",
+      "contract_type": "CDI",
+      "seniority": "junior",
+      "skills": [
+        "Python",
+        "Django",
+        "REST API",
+        "AWS"
+      ],
+      "published_at": "2026-09-27T09:45:00+00:00",
+      "apply_url": "demo://simple"
+    },
+    {
+      "external_id": "dataharbor-1901",
+      "url": "https://jobs.example.com/dataharbor/analytics-engineer",
+      "company": "DataHarbor",
+      "title": "Analytics Engineer",
+      "description": "Poste junior d'Analytics Engineer. Vous modéliserez les données avec dbt et SQL sur Snowflake, en lien avec les équipes produit. Paris ou remote France. CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "junior",
+      "skills": [
+        "dbt",
+        "SQL",
+        "Snowflake",
+        "Data modeling"
+      ],
+      "published_at": "2026-09-26T13:30:00+00:00",
+      "apply_url": "demo://greenhouse"
+    },
+    {
+      "external_id": "lumen-2001",
+      "url": "https://jobs.example.com/lumen/data-engineer-freelance",
+      "company": "Fintech Lumen",
+      "title": "Data Engineer (Freelance)",
+      "description": "Mission freelance de six mois. Python, Airflow, PostgreSQL et Docker. Trois ans d'expérience requis. Remote depuis la France.",
+      "location": "Remote (France)",
+      "remote": "remote",
+      "contract_type": "freelance",
+      "seniority": "mid",
+      "skills": [
+        "Python",
+        "Airflow",
+        "PostgreSQL",
+        "Docker"
+      ],
+      "published_at": "2026-09-25T08:00:00+00:00",
+      "apply_url": "demo://greenhouse"
+    },
+    {
+      "external_id": "healthplus-2101",
+      "url": "https://jobs.example.com/healthplus/data-analyst-health",
+      "company": "HealthPlus",
+      "title": "Data Analyst Santé",
+      "description": "Analyse de données de santé avec SQL et Tableau. Vous travaillerez sur la qualité des données et le reporting réglementaire. Deux ans d'expérience appréciés. Paris, CDI, hybride.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "skills": [
+        "SQL",
+        "Tableau",
+        "Data quality",
+        "Reporting"
+      ],
+      "published_at": "2026-09-24T12:30:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "medimind-2201",
+      "url": "https://jobs.example.com/medimind/ml-engineer",
+      "company": "MediMind",
+      "title": "Machine Learning Engineer",
+      "description": "Vous industrialiserez des modèles NLP avec MLflow et Docker. Python, PyTorch, AWS. Three years of experience required. Paris, remote friendly, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "mid",
+      "skills": [
+        "Python",
+        "PyTorch",
+        "MLflow",
+        "Docker",
+        "AWS",
+        "NLP"
+      ],
+      "published_at": "2026-09-23T09:00:00+00:00",
+      "apply_url": "demo://custom"
+    },
+    {
+      "external_id": "orbital-2301",
+      "url": "https://jobs.example.com/orbital-bank/staff-data-scientist",
+      "company": "Orbital Bank",
+      "title": "Staff Data Scientist",
+      "description": "Rôle staff de data science. Vous définirez la stratégie de modélisation du risque et encadrerez plusieurs équipes. Huit ans d'expérience minimum. Paris.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "principal",
+      "skills": [
+        "Python",
+        "Machine Learning",
+        "Statistics",
+        "SQL"
+      ],
+      "published_at": "2026-09-22T10:00:00+00:00",
+      "apply_url": "demo://custom"
+    },
+    {
+      "external_id": "shoply-2401",
+      "url": "https://jobs.example.com/shoply/data-analyst-remote-eu",
+      "company": "Shoply",
+      "title": "Data Analyst",
+      "description": "Nous cherchons un Data Analyst pour l'équipe growth. SQL, Python, A/B testing et visualization. Remote (EU) possible. Junior accepté. CDI.",
+      "location": "Remote (EU)",
+      "remote": "remote",
+      "contract_type": "CDI",
+      "seniority": "junior",
+      "skills": [
+        "SQL",
+        "Python",
+        "A/B testing",
+        "Visualization"
+      ],
+      "published_at": "2026-09-21T11:20:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "atlas-2501",
+      "url": "https://jobs.example.com/atlas/junior-data-engineer-3y",
+      "company": "Atlas Consulting",
+      "title": "Junior Data Engineer",
+      "description": "Mission chez un client bancaire. Python, SQL et Airflow. Trois ans d'expérience requis malgré l'intitulé junior. Paris, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "junior",
+      "skills": [
+        "Python",
+        "SQL",
+        "Airflow"
+      ],
+      "published_at": "2026-09-20T09:10:00+00:00",
+      "apply_url": "demo://greenhouse"
+    },
+    {
+      "external_id": "greenledger-2601",
+      "url": "https://jobs.example.com/greenledger/data-engineer",
+      "company": "GreenLedger",
+      "title": "Data Engineer",
+      "description": "Construisez notre plateforme ESG : Python, dbt, Snowflake. Jeune diplômé bienvenu. Paris, hybride, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "skills": [
+        "Python",
+        "dbt",
+        "Snowflake",
+        "SQL"
+      ],
+      "published_at": "2026-09-19T08:40:00+00:00",
+      "apply_url": "demo://greenhouse"
+    },
+    {
+      "external_id": "nova-2701",
+      "url": "https://jobs.example.com/nova-retail/python-developer",
+      "company": "Nova Retail",
+      "title": "Python Developer",
+      "description": "Développement d'outils internes en Python et FastAPI. PostgreSQL, Docker, Git. Junior accepté. Paris, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "skills": [
+        "Python",
+        "FastAPI",
+        "PostgreSQL",
+        "Docker",
+        "Git"
+      ],
+      "published_at": "2026-09-18T14:00:00+00:00",
+      "apply_url": "demo://simple"
+    },
+    {
+      "external_id": "lumen-2801",
+      "url": "https://jobs.example.com/lumen/bi-analyst-entry",
+      "apply_url": "demo://custom-unknown",
+      "company": "Fintech Lumen",
+      "title": "Business Intelligence Analyst",
+      "description": "Poste entry level. Vous construirez des dashboards Power BI et automatiserez des rapports avec SQL et Excel. Lyon, CDI.",
+      "location": "Lyon, France",
+      "remote": "onsite",
+      "contract_type": "CDI",
+      "seniority": "entry",
+      "skills": [
+        "Power BI",
+        "SQL",
+        "Excel"
+      ],
+      "published_at": "2026-09-17T10:00:00+00:00"
+    },
+    {
+      "external_id": "vision-2901",
+      "url": "https://jobs.example.com/visionlabs/data-scientist-phd",
+      "company": "VisionLabs",
+      "title": "Data Scientist",
+      "description": "Vous développerez des modèles de vision par ordinateur. Un doctorat est préféré mais non obligatoire. Python, PyTorch et statistiques. Paris, hybride, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "skills": [
+        "Python",
+        "PyTorch",
+        "Statistics",
+        "Computer vision"
+      ],
+      "published_at": "2026-09-16T09:30:00+00:00",
+      "apply_url": "demo://custom"
+    },
+    {
+      "external_id": "orbital-3001",
+      "url": "https://jobs.example.com/orbital-bank/data-analyst-35",
+      "company": "Orbital Bank",
+      "title": "Data Analyst",
+      "description": "Analyse des risques de crédit. SQL, Python et Power BI. 3-5 years of experience required. Paris, hybride, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "mid",
+      "skills": [
+        "SQL",
+        "Python",
+        "Power BI",
+        "Statistics"
+      ],
+      "published_at": "2026-09-15T08:00:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "healthplus-3101",
+      "url": "https://jobs.example.com/healthplus/senior-data-analyst",
+      "company": "HealthPlus",
+      "title": "Senior Data Analyst",
+      "description": "Poste senior. Cinq ans d'expérience en analyse de données attendus. SQL, Tableau et mentorat des juniors. Paris, hybride, CDI.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "senior",
+      "skills": [
+        "SQL",
+        "Tableau",
+        "Data visualization"
+      ],
+      "published_at": "2026-09-14T12:00:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "dataharbor-3201",
+      "url": "https://jobs.example.com/dataharbor/graduate-data-analyst",
+      "company": "DataHarbor",
+      "title": "Graduate Data Analyst",
+      "description": "Programme graduate. SQL, Excel et Power BI. Formation et mentorat inclus. Paris, CDI, hybride.",
+      "location": "Paris, France",
+      "remote": "hybrid",
+      "contract_type": "CDI",
+      "seniority": "entry",
+      "skills": [
+        "SQL",
+        "Excel",
+        "Power BI"
+      ],
+      "published_at": "2026-09-13T09:00:00+00:00",
+      "apply_url": "demo://lever"
+    },
+    {
+      "external_id": "cloudforge-3301",
+      "url": "https://jobs.example.com/cloudforge/ai-engineer",
+      "company": "CloudForge",
+      "title": "AI Engineer",
+      "description": "Nous cherchons un AI Engineer pour construire des fonctionnalités LLM dans notre SaaS. Python, FastAPI, LLM et Docker. Remote France, CDI. Un à trois ans d'expérience appréciés.",
+      "location": "Remote (France)",
+      "remote": "remote",
+      "contract_type": "CDI",
+      "seniority": "junior",
+      "skills": [
+        "Python",
+        "FastAPI",
+        "LLM",
+        "Docker"
+      ],
+      "published_at": "2026-09-12T11:00:00+00:00",
+      "apply_url": "demo://custom"
+    }
+  ]
+}

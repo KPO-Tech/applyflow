@@ -8,7 +8,11 @@ build/
 .ruff_cache/
 .coverage
 htmlcov/
-data/
+# Données locales de l'utilisateur (base, CV importés) : uniquement à la racine.
+# Sans le « / » initial, `data/` masquait aussi `src/applyflow/data/`, dont le jeu
+# d'annonces fictives livré avec le paquet — d'où des tests verts en local et
+# rouges dans une copie fraîche du dépôt.
+/data/
 applyflow.toml
 .streamlit/
 *.db
@@ -17,4 +21,4 @@ applyflow.toml
 .DS_Store
 
 # Dépôts de référence clonés (non versionnés)
-private/
+/private/
